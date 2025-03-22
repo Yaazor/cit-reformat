@@ -23,7 +23,7 @@ go.work
 .idea
 
 # Fichiers env local
-# src/
+src/
 
 output.json
 
