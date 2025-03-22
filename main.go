@@ -5,6 +5,7 @@ import (
 	"cit-transform/transform"
 	"encoding/json"
 	"fmt"
+	"github.com/fatih/color"
 	"github.com/magiconair/properties"
 	"log"
 	"os"
@@ -16,6 +17,7 @@ import (
 var itemsMap map[string][]transform.ConvertElement
 
 func main() {
+	color.RGB(156, 225, 235).Println("🔧 Démarrage du programme.")
 	itemsMap := make(map[string][]transform.ConvertElement)
 
 	data, err := GetPropertiesFiles("./src")
@@ -23,6 +25,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	color.RGB(174, 235, 156).Println("🖊️ Création du JSON...")
 	for _, d := range *data {
 		p, err := properties.LoadString(d)
 		if err != nil {
@@ -39,9 +42,13 @@ func main() {
 	}
 
 	js, _ := json.MarshalIndent(itemsMap, "", "\t")
-	os.WriteFile("output.json", js, 0755)
+	err = os.WriteFile("output.json", js, 0755)
 
-	fmt.Println(string(js))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	color.RGB(217, 156, 235).Println("🖥️ Conversion terminée.")
 }
 
 func StructToOutput(c *cit.SourceCIT) (o *transform.ConvertElement) {
@@ -86,6 +93,7 @@ func GetPropertiesFiles(root string) (f *[]string, e error) {
 					fmt.Print(err)
 				} else {
 					stx := string(txt)
+					color.RGB(235, 221, 156).Printf("📄 Lecture du fichier '%v'\n", info.Name())
 					if strings.Contains(stx, "components.custom_name=") {
 						for r := range removedPrefixes {
 							stx = strings.ReplaceAll(stx, removedPrefixes[r], "")
