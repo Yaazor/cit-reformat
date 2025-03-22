@@ -95,6 +95,9 @@ func GetPropertiesFiles(root string) (f *[]string, e error) {
 					stx := string(txt)
 					color.RGB(235, 221, 156).Printf("📄 Lecture du fichier '%v'\n", info.Name())
 					if strings.Contains(stx, "components.custom_name=") {
+						stx = strings.ReplaceAll(stx, "matchItems", "items")
+						stx = strings.ReplaceAll(stx, "items=minecraft:", "items=")
+
 						for r := range removedPrefixes {
 							stx = strings.ReplaceAll(stx, removedPrefixes[r], "")
 						}
